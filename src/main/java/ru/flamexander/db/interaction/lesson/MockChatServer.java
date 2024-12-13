@@ -6,33 +6,28 @@ public class MockChatServer {
     public static void main(String[] args) {
         DataSource dataSource = null;
         try {
-            System.out.println("РЎРµСЂРІРµСЂ С‡Р°С‚Р° Р·Р°РїСѓС‰РµРЅ");
+            System.out.println("Сервер чата запущен");
             dataSource = new DataSource("jdbc:sqlite:jdb.db");
             dataSource.connect();
 
-            UsersDao usersDao = new UsersDao(dataSource);
-            usersDao.init();
-            System.out.println(usersDao.getAllUsers());
-//            usersDao.save(new User(null, "A", "A", "A"));
-//            System.out.println(usersDao.getAllUsers());
+            new DbMigrator(dataSource).migrate("dbinit.sql");
+
             AbstractRepository<User> usersRepository = new AbstractRepository<>(dataSource, User.class);
-            usersRepository.save(new User(null, "B", "B", "B"));
-            System.out.println(usersDao.getAllUsers());
+            usersRepository.save(new User(null, "BB", "CC", "DD"));
+            System.out.println("usersRepository: " + usersRepository.findById(1L));
+            System.out.println("List: " + usersRepository.findAll());
+            usersRepository.update(new User(2L, "BBB", "CCC", "DDD"));
+            System.out.println("List: " + usersRepository.findAll());
+            usersRepository.deleteById(2L);
+            System.out.println("List: " + usersRepository.findAll());
 
-//            AuthenticationService authenticationService = new AuthenticationService(usersDao);
-//            UsersStatisticService usersStatisticService = new UsersStatisticService(usersDao);
-//            BonusService bonusService = new BonusService(dataSource);
-//            bonusService.init();
-
-//            authenticationService.register("A", "A", "A");
-            // РћСЃРЅРѕРІРЅР°СЏ СЂР°Р±РѕС‚Р° СЃРµСЂРІРµСЂР° С‡Р°С‚Р°
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             if (dataSource != null) {
                 dataSource.close();
             }
-            System.out.println("РЎРµСЂРІРµСЂ С‡Р°С‚Р° Р·Р°РІРµСЂС€РёР» СЃРІРѕСЋ СЂР°Р±РѕС‚Сѓ");
+            System.out.println("Сервер чата завершил свою работу");
         }
     }
 }

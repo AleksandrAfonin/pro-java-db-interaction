@@ -25,7 +25,7 @@ public class DataSource {
     public void connect() throws SQLException {
         connection = DriverManager.getConnection(url);
         statement = connection.createStatement();
-        System.out.println("РЈСЃС‚Р°РЅРѕРІР»РµРЅРѕ СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р‘Р”: " + url);
+        System.out.println("Установлено соединение с БД: " + url);
     }
 
     public void close() {
@@ -43,6 +43,6 @@ public class DataSource {
                 e.printStackTrace();
             }
         }
-        System.out.println("РћС‚ Р‘Р” РѕС‚РєР»СЋС‡РёР»РёСЃСЊ");
+        System.out.println("От БД отключились");
     }
 }
